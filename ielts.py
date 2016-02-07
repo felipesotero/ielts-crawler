@@ -50,7 +50,7 @@ class IeltsCrawler(object):
     def fill_availability_form_and_get_result_page(self, country_form_soup):
         # Prepare to select the month, city and module:
         EARLY_DATE = country_form_soup.find(id='ctl00_ContentPlaceHolder1_ddlDateMonthYear').find('option')['value']
-        TOWN = 'Belo Horizonte'
+        TOWN = 'Recife'
         MODULE = 2  # General Training
         VIEWSTATE = country_form_soup.find(id='__VIEWSTATE')['value']
         # EVENTVALIDATION = country_form_soup.find(id='__EVENTVALIDATION')['value']
