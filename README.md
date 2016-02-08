@@ -10,8 +10,8 @@ This script crawls into the british council page to check for IELTS exams' avail
 
 ## Instalation and Usage
 ```shell
-pip install requirements
-python ielts.py
+pip install -r requirements.txt
+./ielts_crawler.sh
 ```
 
 ## We recommend to use virtualenv
