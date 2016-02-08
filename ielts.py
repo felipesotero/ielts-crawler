@@ -36,7 +36,7 @@ def main(country=None, town=None, module=None):
     country_form_response_url = FORM_URL
     country_form_soup = crawler.fill_country_form_and_get_availability_form(form_soup, country_form_response_url)
     availability_result_page_soup = crawler.fill_availability_form_and_get_result_page(country_form_soup)
-    print crawler.get_availability_from_result_page(availability_result_page_soup)
+    return crawler.is_date_available(availability_result_page_soup)
 
 
 class IeltsCrawler(object):
@@ -99,6 +99,7 @@ class IeltsCrawler(object):
         # Parse response
         return BeautifulSoup(availability_form_response.content, "html.parser")
 
+    '''Return a list of availabilities'''
     def get_availability_from_result_page(self, availability_soup):
         # Check if there's any availability:
         availabilities = []
@@ -106,7 +107,16 @@ class IeltsCrawler(object):
             content = exam.find_all('div')[3].contents[0]
             availabilities.append('Full' not in content)
 
-        return str(availabilities)
+        return availabilities
+
+    '''Return True if there is at least one date available'''
+    def is_date_available(self, availability_soup):
+        # Check if there's any availability:
+        for exam in availability_soup.find_all('div', {'class': 'pnlBodyDetailRowBox'}):
+            content = exam.find_all('div')[3].contents[0]
+            if 'Full' not in content:
+                return True
+            return False
 
 
 if __name__ == '__main__':
@@ -124,11 +134,11 @@ if __name__ == '__main__':
             module = options.MODULES[module]
         except:
             sys.exit('Country, City or Module option unavailable. Check spelling')
-        sys.exit(main(country, city, module))
+        sys.exit(0 if main(country, city, module) else 2)
 
     elif len(args) == 1:
         # Run with default options
-        sys.exit(main())
+        sys.exit(0 if main() else 2)
     else:
         sys.exit('You must provide the country, city and module in that order if you do not want\
             to run the default values, eg.: Brazil Recife "General Training"')
