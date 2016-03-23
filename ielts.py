@@ -105,7 +105,7 @@ class IeltsCrawler(object):
         availabilities = []
         for exam in availability_soup.find_all('div', {'class': 'pnlBodyDetailRowBox'}):
             content = exam.find_all('div')[3].contents[0]
-            availabilities.append('Full' not in content)
+            availabilities.append('Available' in content)
 
         return availabilities
 
@@ -114,7 +114,7 @@ class IeltsCrawler(object):
         # Check if there's any availability:
         for exam in availability_soup.find_all('div', {'class': 'pnlBodyDetailRowBox'}):
             content = exam.find_all('div')[3].contents[0]
-            if 'Full' not in content:
+            if 'Available' in content:
                 return True
             return False
 
